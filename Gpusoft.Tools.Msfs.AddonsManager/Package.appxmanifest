@@ -11,15 +11,15 @@
   IgnorableNamespaces="uap rescap genTemplate">
 
   <Identity
-    Name="43c44790-9262-4f52-91c2-b3e2dd3f7760"
+    Name="Gpusoft.Tools.Msfs.AddonsManager"
     Publisher="CN=guill"
     Version="1.0.0.0" />
     
   <mp:PhoneIdentity PhoneProductId="43c44790-9262-4f52-91c2-b3e2dd3f7760" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
   <Properties>
-    <DisplayName>Gpusoft.Tools.Msfs.AddonsManager</DisplayName>
-    <PublisherDisplayName>guill</PublisherDisplayName>
+    <DisplayName>Msfs Addons Manager</DisplayName>
+    <PublisherDisplayName>Gpusoft</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -37,7 +37,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="ms-resource:AppDisplayName"
+        DisplayName="Msfs Addons Manager"
         Description="ms-resource:AppDescription"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"

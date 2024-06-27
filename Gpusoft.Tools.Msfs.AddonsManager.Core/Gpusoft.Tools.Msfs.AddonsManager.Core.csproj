@@ -6,7 +6,11 @@
     <Platforms>x86;x64;arm64;AnyCPU</Platforms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
+  
+  <PropertyGroup>
+	<UseRidGraph>true</UseRidGraph>
+  </PropertyGroup>
+	
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>

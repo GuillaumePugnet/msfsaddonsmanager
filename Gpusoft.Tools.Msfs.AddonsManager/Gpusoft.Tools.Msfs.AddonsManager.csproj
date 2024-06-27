@@ -16,6 +16,10 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
 
+  <PropertyGroup>
+ 	<UseRidGraph>true</UseRidGraph>
+  </PropertyGroup>
+	
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
