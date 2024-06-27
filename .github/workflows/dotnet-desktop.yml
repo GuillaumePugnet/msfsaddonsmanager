@@ -52,7 +52,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
-    runs-on: self-hosted
+    runs-on: windows-latest
     
     env:
       Solution_Name: Gpusoft.Tools.Msfs.AddonsManager.sln       # Replace with your solution name, i.e. MyWpfApp.sln.
