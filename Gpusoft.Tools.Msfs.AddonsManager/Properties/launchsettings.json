@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "Gpusoft.Tools.Msfs.AddonsManager (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "Gpusoft.Tools.Msfs.AddonsManager (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
