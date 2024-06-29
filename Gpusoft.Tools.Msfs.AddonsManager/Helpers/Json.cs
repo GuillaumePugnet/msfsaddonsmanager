@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Gpusoft.Tools.Msfs.AddonsManager.Core.Helpers;
+namespace Gpusoft.Tools.Msfs.AddonsManager.Helpers;
 
 public static class Json
 {

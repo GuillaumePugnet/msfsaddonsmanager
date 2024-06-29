@@ -1,10 +1,10 @@
 ﻿using System.Text;
 
-using Gpusoft.Tools.Msfs.AddonsManager.Core.Contracts.Services;
+using Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
 
 using Newtonsoft.Json;
 
-namespace Gpusoft.Tools.Msfs.AddonsManager.Core.Services;
+namespace Gpusoft.Tools.Msfs.AddonsManager.Services;
 
 public class FileService : IFileService
 {

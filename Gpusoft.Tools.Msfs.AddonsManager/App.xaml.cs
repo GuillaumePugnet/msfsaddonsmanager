@@ -1,7 +1,7 @@
 ﻿using Gpusoft.Tools.Msfs.AddonsManager.Activation;
 using Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
-using Gpusoft.Tools.Msfs.AddonsManager.Core.Contracts.Services;
-using Gpusoft.Tools.Msfs.AddonsManager.Core.Services;
+using Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
+using Gpusoft.Tools.Msfs.AddonsManager.Services;
 using Gpusoft.Tools.Msfs.AddonsManager.Helpers;
 using Gpusoft.Tools.Msfs.AddonsManager.Models;
 using Gpusoft.Tools.Msfs.AddonsManager.Services;
@@ -40,7 +40,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar { get; set; }
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
 
     public App()
     {
@@ -68,11 +71,22 @@ public partial class App : Application
             // Core Services
             services.AddSingleton<IFileService, FileService>();
 
+            // Data services
+            services.AddSingleton<IDataService, DataService>();
+
+            // Domain services
+            services.AddSingleton<ILibraryService, LibraryService>();
+
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
+
+            services.AddTransient<LibrariesViewModel>();
+            services.AddTransient<LibrariesPage>();
+
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
+
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 

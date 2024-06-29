@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -6,7 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
 using Gpusoft.Tools.Msfs.AddonsManager.Helpers;
-
+using Gpusoft.Tools.Msfs.AddonsManager.Models;
 using Microsoft.UI.Xaml;
 
 using Windows.ApplicationModel;
@@ -27,6 +28,8 @@ public partial class SettingsViewModel : ObservableRecipient
     {
         get;
     }
+
+    public ObservableCollection<Category> Categories { get; set; } = [];
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService)
     {

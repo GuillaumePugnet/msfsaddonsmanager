@@ -1,4 +1,4 @@
-﻿using Gpusoft.Tools.Msfs.AddonsManager.Core.Helpers;
+﻿using Gpusoft.Tools.Msfs.AddonsManager.Helpers;
 
 using Windows.Storage;
 using Windows.Storage.Streams;

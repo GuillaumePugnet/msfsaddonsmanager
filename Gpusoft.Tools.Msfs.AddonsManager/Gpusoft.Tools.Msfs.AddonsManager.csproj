@@ -19,6 +19,10 @@
   <PropertyGroup>
  	<UseRidGraph>true</UseRidGraph>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Views\LibrariesPage.xaml" />
+  </ItemGroup>
 	
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
@@ -26,14 +30,14 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+    <PackageReference Include="LiteDB.Async" Version="0.1.8" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240607001" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Gpusoft.Tools.Msfs.AddonsManager.Core\Gpusoft.Tools.Msfs.AddonsManager.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
@@ -43,6 +47,12 @@
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\LibrariesPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

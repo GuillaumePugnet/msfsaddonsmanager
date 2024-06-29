@@ -1,4 +1,4 @@
-﻿namespace Gpusoft.Tools.Msfs.AddonsManager.Core.Contracts.Services;
+﻿namespace Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
 
 public interface IFileService
 {
