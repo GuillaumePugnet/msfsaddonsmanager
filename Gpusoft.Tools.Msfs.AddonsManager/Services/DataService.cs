@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
-using Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
-using Gpusoft.Tools.Msfs.AddonsManager.Helpers;
 using Gpusoft.Tools.Msfs.AddonsManager.Helpers;
 using Gpusoft.Tools.Msfs.AddonsManager.Models;
 using LiteDB;
@@ -18,15 +13,18 @@ namespace Gpusoft.Tools.Msfs.AddonsManager.Services;
 public class DataService : IDataService
 {
     private readonly LocalSettingsOptions _options;
-    private readonly ILiteDatabaseAsync _db;
+    private readonly LiteDatabaseAsync _db;
 
     private readonly string _applicationDataFolder;
     private readonly string _localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
     private readonly string _databasePath;
+    private readonly ConcurrentDictionary<Type, string> _CollectionNames = new();
+    private readonly ConcurrentDictionary<Type, PropertyInfo> _bsonIdProperties = new();
 
     public DataService(IOptions<LocalSettingsOptions> options)
     {
         _options = options.Value;
+        _applicationDataFolder = Path.Combine(_localApplicationData, _options.ApplicationDataFolder ?? Constants.DefaultApplicationDataFolder);
 
         if (RuntimeHelper.IsMSIX)
         {
@@ -34,42 +32,89 @@ public class DataService : IDataService
         }
         else
         {
-            _applicationDataFolder = Path.Combine(_localApplicationData, _options.ApplicationDataFolder ?? Constants.DefaultApplicationDataFolder);
             Directory.CreateDirectory(_applicationDataFolder);
             _databasePath = Path.Combine(_applicationDataFolder, Constants.DatabaseFilename);
         }
         _db = new LiteDatabaseAsync($"Filename={_databasePath};Connection=shared;");
     }
 
-    public Task<IEnumerable<Library>> GetLibrariesAsync()
+    public Task AddItemAsync<T>(T item)
     {
-        return _db.GetCollection<Library>("libraries").FindAllAsync();
+        var collectionName = GetCollectionName<T>();
+
+        return _db.GetCollection<T>(collectionName).InsertAsync(item);
     }
 
-    public Task AddLibraryAsync(Library library)
+    public Task<T> FindItemAsync<T>(ObjectId objectId)
     {
-        return _db.GetCollection<Library>("libraries").InsertAsync(library);
+        var collectionName = GetCollectionName<T>();
+
+        return _db.GetCollection<T>(collectionName).FindByIdAsync(objectId);
     }
 
-    public async Task DeleteLibraryAsync(Library library)
+    public Task DeleteItemAsync<T>(T item)
     {
-        var localDb = await _db.BeginTransactionAsync();
-        await localDb.GetCollection<Library>("libraries").DeleteAsync(library.LibraryId);
-        await localDb.GetCollection<Addon>("addons").DeleteManyAsync(a => a.LibraryId == library.LibraryId);
-        await localDb.CommitAsync();
+        var collectionName = GetCollectionName<T>();
+        var objectId = GetObjectId<T>(item);
+
+        return _db.GetCollection<T>(collectionName).DeleteAsync(objectId);
     }
 
-    public Task<Library> GetLibraryAsync(ObjectId libraryId)
+    public Task DeleteItemAsync<T>(ObjectId objectId)
     {
-        return _db.GetCollection<Library>("libraries").FindByIdAsync(libraryId);
-    }
-    public Task AddAddonAsync(Addon addon)
-    {
-        return _db.GetCollection<Addon>("addons").InsertAsync(addon);
+        var collectionName = GetCollectionName<T>();
+
+        return _db.GetCollection<T>(collectionName).DeleteAsync(objectId);
     }
 
-    public Task DeleteAddonAsync(Addon addon)
+    public Task<bool> UpdateItemAsync<T>(T item)
     {
-        return _db.GetCollection<Addon>("addons").DeleteAsync(addon.AddonId);
+        var collectionName = GetCollectionName<T>();
+
+        return _db.GetCollection<T>(collectionName).UpdateAsync(item);
+    }
+
+    public Task<IEnumerable<T>> FindItemsAsync<T>()
+    {
+        var collectionName = GetCollectionName<T>();
+
+        return _db.GetCollection<T>(collectionName).FindAllAsync();
+    }
+
+    private string GetCollectionName<T>()
+    {
+        var type = typeof(T);
+        if (false == _CollectionNames.TryGetValue(type, out var collectionName))
+        {
+            var attributes = Attribute.GetCustomAttributes(typeof(T));
+            if (attributes
+                .Where(a => a is CollectionAttribute)
+                .SingleOrDefault() is CollectionAttribute collectionAttribute)
+            {
+                collectionName = _CollectionNames.AddOrUpdate(type, collectionAttribute.CollectionName, (k, v) => collectionAttribute.CollectionName);
+            }
+            else
+            {
+                throw new MissingAttributeException(typeof(CollectionAttribute));
+            }
+        }
+
+        return collectionName;
+    }
+
+    private ObjectId GetObjectId<T>(T instance)
+    {
+        var type = typeof(T);
+        if (false == _bsonIdProperties.TryGetValue(type, out var property))
+        {
+            property = type.GetProperties()
+            .FirstOrDefault(prop => prop.GetCustomAttributes(typeof(BsonIdAttribute), false).Length > 0);
+            if (property != null)
+            {
+                _bsonIdProperties.TryAdd(type, property);
+            }
+        }
+
+        return (ObjectId)property?.GetValue(instance);
     }
 }

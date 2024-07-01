@@ -45,13 +45,14 @@ public partial class LibrariesViewModel : ObservableRecipient, INavigationAware
 
     public async Task OnDeleteLibraryCommandAsync(LibraryViewModel? libraryViewModel)
     {
-        await _dataService.DeleteLibraryAsync(libraryViewModel.Library);
+        await _dataService.DeleteItemAsync<Library>(libraryViewModel.Library);
         await LoadLibrariesAsync();
     }
 
 
     public Task OnScanLibraryCommandAsync(LibraryViewModel? libraryViewModel)
     {
+        // TODO handle null lib
         return _libraryService.ScanLibraryAsync(libraryViewModel.Library.LibraryId);      
     }
 
@@ -70,7 +71,7 @@ public partial class LibrariesViewModel : ObservableRecipient, INavigationAware
         if (folder != null)
         {
             var library = new Library() { Path = folder.Path };
-            await _dataService.AddLibraryAsync(library);
+            await _dataService.AddItemAsync<Library>(library);
             await LoadLibrariesAsync();
             //  WeakReferenceMessenger.Default.Send(new SettingUpdatedMessage(SettingsKeys.AddonsDirectoryPath));
         }
@@ -79,7 +80,7 @@ public partial class LibrariesViewModel : ObservableRecipient, INavigationAware
     private async Task LoadLibrariesAsync()
     {
         Libraries.Clear();
-        var libraries = await _dataService.GetLibrariesAsync();
+        var libraries = await _dataService.FindItemsAsync<Library>();
         foreach (var l in libraries)
         {
             Libraries.Add(new LibraryViewModel(l, this));

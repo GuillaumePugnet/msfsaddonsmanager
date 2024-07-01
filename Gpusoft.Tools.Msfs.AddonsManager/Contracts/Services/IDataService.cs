@@ -10,16 +10,10 @@ namespace Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
 
 public interface IDataService
 {
-    Task AddLibraryAsync(Library library);
-    Task DeleteLibraryAsync(Library library);
-    Task<Library> GetLibraryAsync(ObjectId libraryId);
-    Task<IEnumerable<Library>> GetLibrariesAsync();
-
-    Task AddAddonAsync(Addon addon);
-    Task DeleteAddonAsync(Addon addon);
-
-
-    Task AddCategoryAsync(Category addon);
-    Task DeleteCategoryAsync(Category addon);
-    Task UpdateCategoryAsync(Category addon);
+    Task AddItemAsync<T>(T item);
+    Task<T> FindItemAsync<T>(ObjectId objectId);
+    Task DeleteItemAsync<T>(T item);
+    Task DeleteItemAsync<T>(ObjectId objectId);
+    Task<bool> UpdateItemAsync<T>(T item);
+    Task<IEnumerable<T>> FindItemsAsync<T>();
 }

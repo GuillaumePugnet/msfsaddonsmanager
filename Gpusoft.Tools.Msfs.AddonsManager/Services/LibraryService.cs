@@ -20,12 +20,13 @@ public class LibraryService : ILibraryService
         _dataService = dataService;
     }
 
-    public async Task ScanLibraryAsync(ObjectId libraryId)
+    public Task ScanLibraryAsync(ObjectId libraryId)
     {
-        var library = await _dataService.GetLibraryAsync(libraryId);
-        if (library != null)
-        {
-         
-        }
+        //var library = await _dataService.GetLibraryAsync(libraryId);
+        //if (library != null)
+        //{
+
+        //}
+        return Task.CompletedTask;
     }
 }
