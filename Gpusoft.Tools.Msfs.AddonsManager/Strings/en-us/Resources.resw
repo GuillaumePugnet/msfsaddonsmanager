@@ -159,9 +159,6 @@
   <data name="LibrariesPage_ListTitle.Text" xml:space="preserve">
     <value>Libraries</value>
   </data>
-  <data name="LibrariesPage_AddNewButton.Content" xml:space="preserve">
-    <value>Add a new library ...</value>
-  </data>
   <data name="LibrariesPage_DeleteFlyoutButton.Content" xml:space="preserve">
     <value>Yes</value>
   </data>
@@ -179,5 +176,11 @@
   </data>
   <data name="Settings_Categories.Text" xml:space="preserve">
     <value>Categories</value>
+  </data>
+  <data name="LibrariesPage_AddNewLibraryTextBlock.Text" xml:space="preserve">
+    <value>Add a new library ...</value>
+  </data>
+  <data name="LibrariesPage_ScanAllTextBlock.Text" xml:space="preserve">
+    <value>Scan all</value>
   </data>
 </root>

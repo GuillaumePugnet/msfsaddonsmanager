@@ -9,5 +9,6 @@ namespace Gpusoft.Tools.Msfs.AddonsManager.Contracts.Services;
 
 public interface ILibraryService
 {
+    Task ScanLibrariesAsync(IEnumerable<ObjectId> libraryIds);
     Task ScanLibraryAsync(ObjectId libraryId);
 }
